@@ -1,25 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
-
+import { Button, Container } from '@mui/material';
+import PrestataireCard, { Prestataire } from './components/PrestataireCard';
+import AddIcon from '@mui/icons-material/Add';
 function App() {
+  const [prestataires, setPrestataires] = useState<Prestataire[]>()
+  function getData() {
+    fetch(process.env.REACT_APP_BFF_URL + "prestataires").then( data => data.json())
+    .then(dataJson => setPrestataires(
+        dataJson
+      ))
+  }
+  useEffect(() => {
+    getData()
+  }, [])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container maxWidth="sm">
+      {prestataires?.map((prestataire) => (
+        <PrestataireCard
+          {...prestataire}
+        />
+      ))}
+      <Button
+      onClick={() => {
+        fetch(process.env.REACT_APP_BFF_URL + "prestataires", {
+          method: "POST",
+          body: JSON.stringify({
+            name: "asdoifghaioufs",
+            nbLike: 189443224,
+            url: "https://www.francetvinfo.fr/pictures/zwzFc6PU5JuzL2NA0BwMqhCrvo0/1200x900/2016/08/23/shrek-5.jpg"
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },  
+        }).then(_ => getData())
+      }}
+      > <AddIcon></AddIcon> add prestataire</Button>
+    </Container>
   );
 }
 
