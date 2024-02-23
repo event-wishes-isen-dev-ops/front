@@ -24,7 +24,7 @@ export default ({name, url, nbLike}:Prestataire) => {
                                     :<FavoriteBorderIcon/>
                                 }
                             </IconButton>
-                            {nbLike.toLocaleString('en-US', { style: 'decimal', maximumFractionDigits : 0, minimumFractionDigits: 0, useGrouping: true })}
+                            {nbLike}
                         </>
                     }
                     title={name}
